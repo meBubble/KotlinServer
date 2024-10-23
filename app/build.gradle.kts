@@ -20,6 +20,10 @@ android {
         }
     }
 
+   /* repositories {
+        mavenCentral()
+    }*/
+
 
     buildTypes {
         release {
@@ -46,8 +50,19 @@ android {
 
     packaging {
         resources {
-            excludes += listOf("/META-INF/{AL2.0,LGPL2.1}", "META-INF/INDEX.LIST", "META-INF/io.netty.versions.properties")  }
+            excludes += listOf("/META-INF/{AL2.0,LGPL2.1}", "META-INF/INDEX.LIST", "META-INF/io.netty.versions.properties")
+        }
     }
+}
+
+tasks.register<Jar>("jar") {
+    from("build/intermediates/javac/debug/classes") {
+        include("**/*.class")
+    }
+    manifest {
+        attributes("Main-Class" to "com.test.kotlinserver")
+    }
+    archiveFileName.set("ServerKotlin.jar")
 }
 
 dependencies {
@@ -77,4 +92,6 @@ dependencies {
     implementation("io.ktor:ktor-client-android:1.6.7")
     implementation("io.ktor:ktor-client-json:1.6.7")
     implementation("io.ktor:ktor-client-serialization:1.6.7")
+
+    implementation("com.squareup.okhttp3:okhttp:3.14.9")
 }
